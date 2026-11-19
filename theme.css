@@ -1,0 +1,155 @@
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap");
+/* ===== Refonte esthétique — surcharge visuelle uniquement ===== */
+:root{--ink:#0f172a;--ink-2:#334155;--muted:#64748b;--line:#e5e8f2;--bg:#f3f5fb;--brand:#4f46e5;--brand-2:#6366f1;--brand-ink:#4338ca;--brand-soft:#eef0ff;--ring:#4f46e526;--ring-strong:#818cf8;--glow:#4f46e566;--hero:linear-gradient(135deg,#1e1b4b 0%,#312e81 50%,#4f46e5 120%);--pos:#059669;--neg:#e11d48;--shadow:0 1px 2px #0f172a0a,0 10px 28px -14px #1e1b4b33;font-family:"Plus Jakarta Sans",Inter,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);background:var(--bg)}
+:root:has(.top.profile-cc){--brand:#be185d;--brand-2:#db2777;--brand-ink:#9d174d;--brand-soft:#fdf0f6;--ring:#be185d26;--ring-strong:#f472b6;--glow:#be185d66;--hero:linear-gradient(135deg,#4c0519 0%,#881337 50%,#be185d 120%)}
+html{scroll-behavior:smooth;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+button:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--ring-strong);outline-offset:2px}
+
+/* Corrections de deux règles cassées par un « \n » parasite */
+.entry-tools{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.mobile-action-label{display:none}
+
+/* En-tête */
+.top{background:var(--hero);border-radius:0 0 28px 28px;padding:30px max(18px,calc((100% - 1100px)/2)) 30px;box-shadow:0 14px 34px -16px #1e1b4b88;position:relative;overflow:hidden}
+.top::after{content:"";position:absolute;right:-60px;top:-80px;width:260px;height:260px;border-radius:50%;background:radial-gradient(circle,#ffffff24,transparent 70%);pointer-events:none}
+.top.profile-cc{background:var(--hero)}
+.top h1{font-size:28px;font-weight:800;letter-spacing:-.025em}
+.top p{color:#ffffffb8;font-size:14px;line-height:1.5;max-width:560px}
+.profile-toggle{background:#ffffff1f;border:1px solid #ffffff2e;border-radius:14px;backdrop-filter:blur(6px)}
+.profile-toggle button{color:#ffffffd0;border-radius:10px;font-weight:700;transition:background .18s,color .18s}
+.profile-toggle button:hover{background:#ffffff1c}
+.profile-toggle button.active,.profile-toggle button[aria-pressed="true"]{background:#fff;color:var(--brand-ink);box-shadow:0 4px 12px -4px #0f172a55}
+.install-app{background:#ffffff1f;border:1px solid #ffffff33;border-radius:12px;color:#fff;font-weight:700;backdrop-filter:blur(6px);transition:background .18s,transform .12s}
+.install-app:hover{background:#ffffff33}
+.install-app:active{transform:scale(.98)}
+#sharedCalcOpen{background:#14b8a6!important;border-color:transparent!important;box-shadow:0 8px 20px -8px #0d948888}
+#sharedCalcOpen:hover{background:#0d9488!important}
+.install-help{color:#ffffffcc}
+
+/* Page */
+.wrap{padding:22px 18px 56px}
+.tabcontent:not(.hidden){animation:rise .28s ease both}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* Navigation mensuelle */
+.toolbar{margin-bottom:18px}
+.monthnav{background:#fff;border:1px solid var(--line);border-radius:16px;padding:5px;box-shadow:var(--shadow)}
+.monthnav button{background:transparent;border:0;border-radius:11px;width:38px;height:38px;padding:0;font-size:22px;line-height:1;color:var(--ink-2);cursor:pointer;transition:background .15s}
+.monthnav button:hover{background:var(--brand-soft);color:var(--brand-ink)}
+.monthnav strong{display:inline-block;font-weight:800;letter-spacing:-.01em}
+.monthnav strong::first-letter{text-transform:uppercase}
+
+/* Champs */
+.toolbar input,.toolbar select,.field input,.field select,.field textarea{border:1px solid #dde1ee;border-radius:13px;padding:12px 13px;background:#fbfcff;color:var(--ink);transition:border-color .15s,box-shadow .15s,background .15s}
+.toolbar input:focus,.toolbar select:focus,.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--brand-2);background:#fff;box-shadow:0 0 0 4px var(--ring)}
+.field label{font-size:12.5px;font-weight:700;letter-spacing:.01em;color:var(--ink-2)}
+.checkrow input[type=checkbox],#sharedCalcPage .sc-check input{width:18px;height:18px;padding:0;accent-color:var(--brand)}
+.checkrow label{padding:8px 12px;border:1px solid var(--line);border-radius:11px;background:#fbfcff;cursor:pointer}
+
+/* Boutons */
+.btn{border:0;border-radius:12px;background:#fff;color:var(--ink-2);font-weight:700;box-shadow:inset 0 0 0 1px var(--line),0 1px 2px #0f172a0d;transition:background .15s,box-shadow .15s,transform .12s}
+.btn:hover{background:#f6f7fd}
+.btn:active{transform:scale(.97)}
+.btn.primary{background:linear-gradient(180deg,var(--brand-2),var(--brand));color:#fff;box-shadow:0 8px 18px -8px var(--glow)}
+.btn.primary:hover{filter:brightness(1.07);background:linear-gradient(180deg,var(--brand-2),var(--brand))}
+.btn.danger{background:#fff1f2;color:#be123c;box-shadow:inset 0 0 0 1px #fecdd3}
+.btn.danger:hover{background:#ffe4e6}
+.entry-filter-trigger{background:var(--brand-soft);color:var(--brand-ink);box-shadow:inset 0 0 0 1px #0000000d}
+.filter-count{background:var(--brand)}
+
+/* Onglets (contrôle segmenté) */
+.tabs{background:#e8ebf6;padding:5px;border-radius:17px;gap:4px;margin:22px 0 8px;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tabs button{flex:1;background:transparent;color:var(--muted);border-radius:13px;padding:11px 16px;font-weight:700;box-shadow:none;transition:background .18s,color .18s,box-shadow .18s}
+.tabs button:hover{color:var(--ink)}
+.tabs button.active{background:#fff;color:var(--brand-ink);box-shadow:0 4px 14px -6px #1e1b4b55}
+
+/* Indicateurs */
+.grid{gap:14px}
+.metric,.panel{border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow)}
+.metric{padding:18px 18px 16px;position:relative;overflow:hidden;background:#fff;transition:transform .18s,box-shadow .18s,border-color .18s}
+.metric::before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,var(--brand),var(--ring-strong));opacity:.85}
+.metric:hover{transform:translateY(-2px)}
+.metric.expanded{border-color:var(--ring-strong);box-shadow:0 14px 30px -14px var(--glow)}
+.metric small{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--muted)}
+.metric strong{font-size:27px;font-weight:800;letter-spacing:-.025em;margin:10px 0 6px;font-variant-numeric:tabular-nums;color:var(--ink)}
+.metric span{font-size:12.5px;color:var(--muted)}
+.metric .metric-detail{border-top:1px dashed #dde1ee;color:var(--ink-2)}
+
+/* Panneaux */
+.panel{padding:20px;background:#fff}
+.panel .panel{box-shadow:none;background:#fafbff;border-radius:16px}
+.panel h2{font-size:18px;font-weight:800;letter-spacing:-.015em}
+.note{color:var(--muted)}
+
+/* Liste des opérations */
+.list{gap:10px}
+.entry-group{gap:10px;margin-top:18px}
+.entry-group-title{background:#eef0fa;color:var(--ink-2);border-radius:12px;padding:10px 13px;font-weight:800;letter-spacing:.01em;transition:background .15s}
+.entry-group-title:hover{background:#e6e9f7}
+.entry-group-title span{color:var(--muted);font-weight:600}
+.item{background:#fff;border:1px solid var(--line);border-radius:15px;padding:13px 15px;box-shadow:0 1px 2px #0f172a08;transition:box-shadow .18s,transform .15s}
+.item:hover{box-shadow:0 10px 22px -14px #1e1b4b55}
+.itemmain b{font-weight:700;color:var(--ink)}
+.amount{font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.positive{color:var(--pos)}
+.negative{color:var(--neg)}
+.meta{color:var(--muted)}
+.pill{background:var(--brand-soft);color:var(--brand-ink);font-weight:650;padding:3px 9px}
+.entry-group.upcoming-recurring .item{background:#f6f8ff;border-color:#d9e3ff;box-shadow:inset 3px 0 0 #6366f1}
+.entry-group.upcoming-planned .item{background:#fffaf0;border-color:#f7e5b8;box-shadow:inset 3px 0 0 #f59e0b}
+.entry-group.upcoming-after-salary .item{background:#faf7ff;border-color:#e6dbfd;box-shadow:inset 3px 0 0 #8b5cf6}
+.entry-group.upcoming-other .item{background:#f2fbf6;border-color:#c9ecd8;box-shadow:inset 3px 0 0 #10b981}
+.empty{border:1.5px dashed #d5daea;border-radius:16px;background:#fafbff;color:var(--muted)}
+
+/* Budgets */
+.budgetrow{padding:15px 2px;border-bottom:1px solid #edf0f7}
+.budgetrow.over-budget{background:#fff1f3;border:1px solid #fecdd3;border-radius:15px;padding:14px}
+.bar{height:9px;background:#e8ebf5;border-radius:99px;margin-top:9px}
+.bar i{border-radius:99px;background:linear-gradient(90deg,#6366f1,#818cf8)!important;transition:width .4s ease}
+.budgetrow.over-budget .bar i{background:linear-gradient(90deg,#f43f5e,#fb7185)!important}
+
+/* Fenêtres modales */
+.modal-backdrop{background:#0f172a8c;backdrop-filter:blur(6px)}
+.modalbox{border-radius:24px;padding:22px;box-shadow:0 30px 80px -20px #0f172a77;animation:pop .22s ease both}
+@keyframes pop{from{opacity:0;transform:translateY(10px) scale(.98)}to{opacity:1;transform:none}}
+
+/* Page « Répartition » */
+#sharedCalcPage{--brand:#0f766e;--brand-2:#14b8a6;--brand-ink:#115e59;--brand-soft:#e6fbf7;--ring:#0f766e26;--ring-strong:#2dd4bf;--glow:#0f766e66;background:var(--bg);font-family:inherit}
+#sharedCalcPage .sc-top{background:linear-gradient(135deg,#042f2e 0%,#115e59 60%,#0f766e 120%);border-radius:0 0 26px 26px;padding:20px max(16px,calc((100% - 1000px)/2)) 22px;box-shadow:0 14px 34px -16px #042f2e99}
+#sharedCalcPage .sc-top h1{font-size:23px;font-weight:800;letter-spacing:-.02em}
+#sharedCalcPage .sc-top .sc-btn{background:#ffffff1f;color:#fff;box-shadow:inset 0 0 0 1px #ffffff33}
+#sharedCalcPage .sc-body{padding:18px 14px 56px}
+#sharedCalcPage .sc-card{border:1px solid var(--line);border-radius:20px;padding:18px;box-shadow:var(--shadow)}
+#sharedCalcPage h2{font-weight:800;letter-spacing:-.015em}
+#sharedCalcPage input,#sharedCalcPage select{border:1px solid #dde1ee;border-radius:12px;padding:11px 12px;background:#fbfcff;transition:border-color .15s,box-shadow .15s}
+#sharedCalcPage input:focus,#sharedCalcPage select:focus{outline:none;border-color:var(--brand-2);background:#fff;box-shadow:0 0 0 4px var(--ring)}
+#sharedCalcPage .sc-field label{font-size:12.5px;color:var(--ink-2)}
+#sharedCalcPage .sc-salary{background:#fafcfc;border:1px solid #e3eaea;border-radius:16px;padding:14px}
+#sharedCalcPage .sc-ratio{font-size:30px;font-weight:800;letter-spacing:-.03em;color:var(--brand)}
+#sharedCalcPage .sc-row{border-bottom:1px solid #edf0f7}
+#sharedCalcPage .sc-btn{border-radius:12px;font-weight:700;transition:background .15s,transform .12s,filter .15s}
+#sharedCalcPage .sc-btn:active{transform:scale(.97)}
+#sharedCalcPage .sc-btn.primary{background:linear-gradient(180deg,var(--brand-2),var(--brand));box-shadow:0 8px 18px -8px var(--glow)}
+#sharedCalcPage .sc-btn.primary:hover{filter:brightness(1.07)}
+#sharedCalcPage .sc-delete{border-radius:10px;background:#fff1f2;color:#be123c}
+#sharedCalcPage .sc-total{background:linear-gradient(180deg,#f0fdfa,#e8fbf7);border:1px solid #b6ece1;border-radius:16px;padding:14px}
+#sharedCalcPage .sc-total small{font-weight:800;text-transform:uppercase;letter-spacing:.06em;font-size:11px}
+#sharedCalcPage .sc-total strong{font-size:24px;font-weight:800;letter-spacing:-.025em;font-variant-numeric:tabular-nums}
+.sc-add-large{border-radius:15px!important;box-shadow:0 10px 22px -10px #0f766e88}
+
+/* Mobile */
+@media(max-width:700px){
+  .top{border-radius:0 0 24px 24px;padding-top:24px;padding-bottom:24px}
+  .top h1{font-size:24px}
+  .metric strong{font-size:22px}
+  .metric{padding:15px 14px 13px}
+  .wrap{padding:18px 12px 48px}
+  .panel{padding:16px;border-radius:18px}
+  .tabs button{padding:10px 8px;font-size:13px}
+  .entry-filters-box{border-radius:24px 24px 0 0}
+  #sharedCalcPage .sc-total strong{font-size:21px}
+}
+@media(max-width:390px){.metric strong{font-size:19px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
