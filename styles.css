@@ -621,34 +621,11 @@ body {
   }
 }
 @media (max-width: 700px) {
-  .entry-main-actions .btn.primary#openEntryModal {
-    width: 42px;
-    min-width: 42px;
-    height: 42px;
-    padding: 0;
-    margin: 0 auto;
-    border-radius: 12px;
-    font-size: 20px;
-    line-height: 1;
-  }
-  .entry-main-actions .btn.primary#openEntryModal .mobile-action-label {
-    font-size: 20px;
-    line-height: 1;
-  }
-}
-@media (max-width: 390px) {
-  .entry-main-actions .btn.primary#openEntryModal {
-    width: 38px;
-    min-width: 38px;
-    height: 38px;
-  }
-}
-@media (max-width: 700px) {
   .entry-main-actions {
     width: max-content;
     max-width: 100%;
     margin-left: auto !important;
-    grid-template-columns: max-content 42px 42px;
+    grid-template-columns: max-content 42px;
     justify-content: end;
   }
   .entry-main-actions .btn:first-child {
@@ -657,14 +634,10 @@ body {
     padding-left: 10px;
     padding-right: 10px;
   }
-  .entry-main-actions .btn.primary#openEntryModal {
-    margin-left: 0;
-    margin-right: 0;
-  }
 }
 @media (max-width: 390px) {
   .entry-main-actions {
-    grid-template-columns: max-content 38px 38px;
+    grid-template-columns: max-content 38px;
   }
   .entry-main-actions .btn:first-child {
     padding-left: 8px;

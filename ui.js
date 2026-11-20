@@ -64,6 +64,17 @@
     meta.content = color;
   }
 
+  // Bloque le défilement de la page tant qu'une fenêtre (.modal) est ouverte.
+  const modals = [...document.querySelectorAll(".modal")];
+  const syncModalLock = () =>
+    document.documentElement.classList.toggle(
+      "modal-open",
+      modals.some((m) => !m.classList.contains("hidden")),
+    );
+  const modalObserver = new MutationObserver(syncModalLock);
+  modals.forEach((m) => modalObserver.observe(m, { attributes: true, attributeFilter: ["class"] }));
+  syncModalLock();
+
   window.toast = toast;
   window.setThemeColor = setThemeColor;
   window.THEME_COLORS = { perso: "#312e81", cc: "#881337", repartition: "#115e59" };

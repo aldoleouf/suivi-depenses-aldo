@@ -241,39 +241,158 @@
   accent-color: var(--brand);
 }
 
-/* Bouton flottant « Ajouter » sur mobile */
+/* Bouton flottant « Ajouter » : toujours en bas à droite de l'écran */
+.fab {
+  position: fixed;
+  right: max(20px, calc((100% - 1100px) / 2 + 18px));
+  bottom: calc(22px + env(safe-area-inset-bottom));
+  z-index: 900;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 56px;
+  padding: 0 22px 0 18px;
+  border-radius: 18px;
+  font-size: 15px;
+  box-shadow:
+    0 14px 30px -10px var(--glow),
+    0 4px 10px -4px #0f172a44 !important;
+}
+.fab-plus {
+  font-size: 30px;
+  font-weight: 500;
+  line-height: 1;
+  margin-top: -2px;
+}
+.wrap {
+  padding-bottom: 110px !important;
+}
+.toast-region {
+  bottom: calc(92px + env(safe-area-inset-bottom));
+}
 @media (max-width: 700px) {
-  .entry-main-actions {
-    grid-template-columns: max-content 42px !important;
-  }
-  .entry-main-actions .btn.primary#openEntryModal {
-    position: fixed;
-    right: 18px;
-    bottom: calc(20px + env(safe-area-inset-bottom));
-    z-index: 900;
-    width: 60px !important;
-    min-width: 60px !important;
-    height: 60px !important;
+  .fab {
+    width: 60px;
+    height: 60px;
+    padding: 0;
     border-radius: 20px;
-    font-size: 30px;
-    box-shadow:
-      0 14px 30px -10px var(--glow),
-      0 4px 10px -4px #0f172a44;
   }
-  .entry-main-actions .btn.primary#openEntryModal .mobile-action-label {
-    font-size: 32px;
-    font-weight: 600;
-    line-height: 1;
+  .fab-label {
+    display: none;
   }
-  #entries {
-    padding-bottom: 80px;
-  }
-  .toast-region {
-    bottom: calc(92px + env(safe-area-inset-bottom));
+  .fab-plus {
+    font-size: 34px;
   }
   .item.entry {
     gap: 8px;
     padding: 10px 6px 10px 8px;
+  }
+}
+
+/* Fenêtres : tiennent dans la hauteur de l'écran, la page derrière ne défile plus */
+html.modal-open,
+html.modal-open body {
+  overflow: hidden;
+}
+.modal {
+  overscroll-behavior: contain;
+}
+.modal-backdrop {
+  touch-action: none;
+}
+.modalbox {
+  max-height: calc(100dvh - 32px);
+  overscroll-behavior: contain;
+}
+.modal-head {
+  flex-wrap: nowrap !important;
+}
+.modal-head h2 {
+  margin: 0;
+  font-size: 19px;
+}
+.modal-head .btn {
+  flex: 0 0 auto;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+}
+.entry-modalbox {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 0;
+}
+.entry-modalbox .modal-head {
+  padding: 16px 18px 10px;
+  margin: 0 !important;
+}
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+.entry-formgrid {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 4px 18px 14px;
+}
+.entry-formgrid .field {
+  min-width: 0;
+}
+.entry-formgrid input:not([type="checkbox"]),
+.entry-formgrid select {
+  min-width: 0;
+  width: 100%;
+}
+.modal-actions {
+  margin: 0 !important;
+  padding: 12px 18px calc(14px + env(safe-area-inset-bottom));
+  border-top: 1px solid var(--line);
+  background: #fff;
+}
+.modal-actions .btn {
+  flex: 1;
+  padding-top: 13px;
+  padding-bottom: 13px;
+}
+@media (max-width: 700px) {
+  .modal#entryModal {
+    padding: 10px;
+  }
+  .modal#entryModal .modalbox {
+    max-height: calc(100dvh - 20px);
+  }
+  .entry-formgrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .entry-formgrid .field.full {
+    grid-column: 1 / -1;
+  }
+  .entry-formgrid .field label {
+    margin-bottom: 4px;
+    font-size: 12px;
+  }
+  .entry-formgrid input:not([type="checkbox"]),
+  .entry-formgrid select {
+    padding: 10px 11px;
+    min-height: 44px;
+  }
+  .entry-formgrid .checkrow {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+  .entry-formgrid .checkrow label {
+    margin: 0;
+    padding: 9px 10px;
+    font-size: 13px;
+    line-height: 1.2;
   }
 }
 
@@ -439,4 +558,7 @@
 }
 .data-table td:first-child::first-letter {
   text-transform: uppercase;
+}
+.checkrow input[type="checkbox"] {
+  flex: 0 0 auto;
 }
