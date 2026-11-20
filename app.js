@@ -601,11 +601,13 @@ $("entryForm").addEventListener("submit", (e) => {
     notes: $("notes").value.trim(),
   };
   let old = db.entries.find((x) => x.id === id);
+  const becameReceived = item.type === "income" && item.done && !(old && old.done && old.type === "income");
   if (old) Object.assign(old, item);
   else db.entries.push(item);
   save();
   resetForm();
   render();
+  if (becameReceived) celebrateIncome(id);
 });
 function resetForm() {
   $("entryForm").reset();
@@ -758,6 +760,13 @@ function openDoneDialog(e) {
   $("doneModal").classList.remove("hidden");
   $("doneSubmit").focus();
 }
+// Confettis pour un revenu reçu, lancés depuis la case de l'opération si elle est visible.
+function celebrateIncome(id) {
+  const box = document.querySelector('.item.entry[data-id="' + CSS.escape(id) + '"] .item-check');
+  const r = box?.getBoundingClientRect();
+  const visible = r && r.bottom > 0 && r.top < window.innerHeight;
+  confetti(visible ? { x: r.left + r.width / 2, y: r.top + r.height / 2 } : undefined);
+}
 function closeDoneDialog() {
   doneEntryId = null;
   $("doneModal").classList.add("hidden");
@@ -795,6 +804,7 @@ $("doneForm").addEventListener("submit", (ev) => {
   save();
   closeDoneDialog();
   render();
+  if (e.type === "income") celebrateIncome(e.id);
   const movedMonth = date.slice(0, 7) !== previous.date.slice(0, 7);
   toast(
     "« " +
@@ -805,7 +815,7 @@ $("doneForm").addEventListener("submit", (ev) => {
       fmtDate(date) +
       (amount !== Number(previous.amount) ? " (" + money(amount) + ")" : "") +
       (movedMonth ? ", déplacée en " + monthName(date.slice(0, 7)) : "") +
-      ".",
+      (/\.$/.test(fmtDate(date)) && amount === Number(previous.amount) && !movedMonth ? "" : "."),
     {
       action: {
         label: "Annuler",
