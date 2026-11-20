@@ -562,3 +562,123 @@ html.modal-open body {
 .checkrow input[type="checkbox"] {
   flex: 0 0 auto;
 }
+
+/* ===== Animation : groupes d'opérations repliables ===== */
+.entry-group-body {
+  display: grid;
+  grid-template-rows: 1fr;
+  opacity: 1;
+  transition:
+    grid-template-rows 0.32s cubic-bezier(0.2, 0.7, 0.2, 1),
+    opacity 0.22s ease;
+}
+.entry-group {
+  gap: 0 !important;
+}
+.entry-group-body > .list {
+  min-height: 0;
+}
+/* L'espace sous le titre est dans la zone rognée : un groupe replié ne garde aucune hauteur. */
+.entry-group-body > .list > .item:first-child {
+  margin-top: 10px;
+}
+.entry-group.collapsed .entry-group-body {
+  grid-template-rows: 0fr;
+  opacity: 0;
+}
+/* On ne coupe le contenu que pendant l'animation ou une fois replié (sinon le menu ⋯ serait rogné). */
+.entry-group.animating .entry-group-body > .list,
+.entry-group.collapsed .entry-group-body > .list {
+  overflow: hidden;
+}
+.entry-group .group-chev {
+  display: inline-block;
+  width: 1em;
+  text-align: center;
+  font-size: 1.15em;
+  line-height: 1;
+  transform: rotate(90deg);
+  transition: transform 0.28s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.entry-group.collapsed .group-chev {
+  transform: rotate(0deg);
+}
+
+/* ===== Animation : passage Perso ⇄ CC ===== */
+/* Couleurs de marque déclarées animables : boutons, pastilles, barres… changent en fondu. */
+@property --brand {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #4f46e5;
+}
+@property --brand-2 {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #6366f1;
+}
+@property --brand-ink {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #4338ca;
+}
+@property --brand-soft {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #eef0ff;
+}
+@property --ring {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #4f46e526;
+}
+@property --ring-strong {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #818cf8;
+}
+@property --glow {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #4f46e566;
+}
+:root {
+  transition:
+    --brand 0.5s ease,
+    --brand-2 0.5s ease,
+    --brand-ink 0.5s ease,
+    --brand-soft 0.5s ease,
+    --ring 0.5s ease,
+    --ring-strong 0.5s ease,
+    --glow 0.5s ease;
+}
+/* En-tête : le dégradé framboise apparaît en fondu par-dessus le violet. */
+.top,
+.top.profile-cc {
+  background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4f46e5 120%);
+  transition: box-shadow 0.5s ease;
+}
+.top::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #4c0519 0%, #881337 50%, #be185d 120%);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+.top.profile-cc::before {
+  opacity: 1;
+}
+.top.profile-cc {
+  box-shadow: 0 14px 34px -16px #4c051988;
+}
+.top > * {
+  position: relative;
+  z-index: 1;
+}
+.profile-toggle button {
+  transition:
+    background 0.3s ease,
+    color 0.3s ease,
+    box-shadow 0.3s ease;
+}

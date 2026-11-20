@@ -213,6 +213,33 @@ function calcReal(targetMonth) {
   return calcMonthSummary(targetMonth).realBase;
 }
 const collapsedEntryGroups = new Set();
+// Replie / déplie un groupe d'opérations en douceur, sans reconstruire la liste.
+function setGroupCollapsed(group, collapsed) {
+  const button = group.querySelector("[data-group-title]");
+  const body = group.querySelector(".entry-group-body");
+  if (collapsed) collapsedEntryGroups.add(button.dataset.groupTitle);
+  else collapsedEntryGroups.delete(button.dataset.groupTitle);
+  if (group.classList.contains("collapsed") === collapsed) return;
+  closeEntryMenus();
+  group.classList.add("animating");
+  group.classList.toggle("collapsed", collapsed);
+  button.setAttribute("aria-expanded", String(!collapsed));
+  body.toggleAttribute("inert", collapsed);
+  clearTimeout(group._animTimer);
+  group._animTimer = setTimeout(() => group.classList.remove("animating"), 360);
+}
+function updateToggleAllButton() {
+  const groups = [...$("entryList").querySelectorAll(".entry-group")];
+  const allCollapsed = groups.length > 0 && groups.every((g) => g.classList.contains("collapsed"));
+  $("toggleAllEntryGroups").textContent = allCollapsed ? "Tout déployer" : "Tout rétracter";
+  return allCollapsed;
+}
+$("toggleAllEntryGroups").onclick = () => {
+  const groups = [...$("entryList").querySelectorAll(".entry-group")];
+  const collapse = !groups.every((g) => g.classList.contains("collapsed"));
+  groups.forEach((g) => setGroupCollapsed(g, collapse));
+  updateToggleAllButton();
+};
 function render() {
   $("monthLabel").textContent = monthName(month);
   const monthOptions = Array.from({ length: 25 }, (_, i) => addMonths(currentYM(), i - 12));
@@ -427,11 +454,6 @@ function render() {
   const allCollapsed =
     visibleGroups.length > 0 && visibleGroups.every((g) => collapsedEntryGroups.has(g.title));
   $("toggleAllEntryGroups").textContent = allCollapsed ? "Tout déployer" : "Tout rétracter";
-  $("toggleAllEntryGroups").onclick = () => {
-    if (allCollapsed) visibleGroups.forEach((g) => collapsedEntryGroups.delete(g.title));
-    else visibleGroups.forEach((g) => collapsedEntryGroups.add(g.title));
-    render();
-  };
   $("entryList").innerHTML = filtered.length
     ? visibleGroups
         .map((g) => {
@@ -449,22 +471,23 @@ function render() {
           return (
             '<div class="entry-group ' +
             styleClass +
+            (collapsed ? " collapsed" : "") +
             '"><button type="button" class="entry-group-title group-collapse-toggle" data-group-title="' +
             esc(g.title) +
             '" aria-expanded="' +
             !collapsed +
-            '" style="width:100%;border:0;text-align:left;cursor:pointer;font:inherit;display:flex;justify-content:space-between;gap:10px;align-items:center"><span>' +
-            (collapsed ? "＋" : "−") +
-            " " +
+            '" style="width:100%;border:0;text-align:left;cursor:pointer;font:inherit;display:flex;justify-content:space-between;gap:10px;align-items:center"><span><span class="group-chev" aria-hidden="true">›</span> ' +
             esc(g.title) +
             " <span>(" +
             g.items.length +
             ')</span></span><span class="group-total">' +
             money(sum(g.items)) +
             "</span></button>" +
-            (collapsed
-              ? ""
-              : '<div class="list" style="margin-top:8px">' + g.items.map(entryCard).join("") + "</div>") +
+            '<div class="entry-group-body"' +
+            (collapsed ? " inert" : "") +
+            '><div class="list">' +
+            g.items.map(entryCard).join("") +
+            "</div></div>" +
             "</div>"
           );
         })
@@ -479,9 +502,8 @@ function render() {
     .forEach((button) =>
       button.addEventListener("click", () => {
         const title = button.dataset.groupTitle;
-        if (collapsedEntryGroups.has(title)) collapsedEntryGroups.delete(title);
-        else collapsedEntryGroups.add(title);
-        render();
+        setGroupCollapsed(button.closest(".entry-group"), !collapsedEntryGroups.has(title));
+        updateToggleAllButton();
       }),
     );
   $("budgetList").innerHTML = (() => {
