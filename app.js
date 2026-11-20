@@ -721,16 +721,103 @@ function applyLabelSuggestion() {
 $("label").addEventListener("input", applyLabelSuggestion);
 $("label").addEventListener("change", applyLabelSuggestion);
 function toggleDone(id) {
-  let e = db.entries.find((x) => x.id === id);
+  const e = db.entries.find((x) => x.id === id);
   if (!e) return;
-  e.done = !e.done;
-  if (e.done) {
-    e.planned = false;
-    e.afterSalary = false;
-  }
+  if (!e.done) return openDoneDialog(e);
+  e.done = false;
   save();
   render();
 }
+// Cocher une opération : demande la date réelle (aujourd'hui par défaut) et le montant réel.
+let doneEntryId = null;
+function openDoneDialog(e) {
+  doneEntryId = e.id;
+  render(); // la case reste décochée tant que ce n'est pas validé
+  const today = todayISO();
+  $("doneTitle").textContent = e.type === "income" ? "Marquer comme reçue" : "Marquer comme effectuée";
+  $("doneLabel").textContent = e.label + " · prévu le " + fmtDate(e.date) + " " + e.date.slice(0, 4);
+  $("doneDate").value = today;
+  $("doneAmount").value = e.amount;
+  const shortcuts = [["Aujourd’hui", today]];
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  shortcuts.push(["Hier", ymOf(yesterday) + "-" + String(yesterday.getDate()).padStart(2, "0")]);
+  if (e.date !== today) shortcuts.push(["Date prévue (" + fmtDate(e.date) + ")", e.date]);
+  $("doneShortcuts").innerHTML = shortcuts
+    .map(
+      ([text, iso]) =>
+        '<button type="button" class="chip' +
+        (iso === today ? " active" : "") +
+        '" data-date="' +
+        iso +
+        '">' +
+        esc(text) +
+        "</button>",
+    )
+    .join("");
+  $("doneModal").classList.remove("hidden");
+  $("doneSubmit").focus();
+}
+function closeDoneDialog() {
+  doneEntryId = null;
+  $("doneModal").classList.add("hidden");
+}
+function syncDoneShortcuts() {
+  $("doneShortcuts")
+    .querySelectorAll(".chip")
+    .forEach((c) => c.classList.toggle("active", c.dataset.date === $("doneDate").value));
+}
+$("doneShortcuts").addEventListener("click", (ev) => {
+  const chip = ev.target.closest("[data-date]");
+  if (!chip) return;
+  $("doneDate").value = chip.dataset.date;
+  syncDoneShortcuts();
+});
+$("doneDate").addEventListener("input", syncDoneShortcuts);
+$("closeDoneModal").onclick = closeDoneDialog;
+$("cancelDone").onclick = closeDoneDialog;
+$("doneBackdrop").onclick = closeDoneDialog;
+$("doneForm").addEventListener("submit", (ev) => {
+  ev.preventDefault();
+  const e = db.entries.find((x) => x.id === doneEntryId);
+  if (!e) return closeDoneDialog();
+  const date = $("doneDate").value;
+  const amount = Number($("doneAmount").value);
+  if (!date || !(amount >= 0)) return;
+  const previous = {
+    date: e.date,
+    amount: e.amount,
+    done: e.done,
+    planned: e.planned,
+    afterSalary: e.afterSalary,
+  };
+  Object.assign(e, { date, amount, done: true, planned: false, afterSalary: false });
+  save();
+  closeDoneDialog();
+  render();
+  const movedMonth = date.slice(0, 7) !== previous.date.slice(0, 7);
+  toast(
+    "« " +
+      e.label +
+      " » " +
+      (e.type === "income" ? "reçue" : "effectuée") +
+      " le " +
+      fmtDate(date) +
+      (amount !== Number(previous.amount) ? " (" + money(amount) + ")" : "") +
+      (movedMonth ? ", déplacée en " + monthName(date.slice(0, 7)) : "") +
+      ".",
+    {
+      action: {
+        label: "Annuler",
+        onClick: () => {
+          Object.assign(e, previous);
+          save();
+          render();
+        },
+      },
+    },
+  );
+});
 function deleteEntry(id) {
   const index = db.entries.findIndex((x) => x.id === id);
   if (index < 0) return;
@@ -844,6 +931,7 @@ $("modalBackdrop").onclick = resetForm;
 document.addEventListener("keydown", (e) => {
   if (e.key !== "Escape") return;
   if (document.querySelector(".item-menu:not(.hidden)")) return closeEntryMenus();
+  if (!$("doneModal").classList.contains("hidden")) return closeDoneDialog();
   resetForm();
 });
 $("filter").onchange = render;
