@@ -65,89 +65,11 @@
               title="Effacer les opérations du mois"
             >
               <span class="delete-month-icon" aria-hidden="true">🗑</span
-              ><span class="desktop-action-label">Effacer les opérations du mois</span></button
-            ><button
-              class="btn primary"
-              type="button"
-              id="openEntryModal"
-              aria-label="Ajouter une opération"
-              title="Ajouter une opération"
-            >
-              <span class="desktop-action-label">+ Ajouter une opération</span
-              ><span class="mobile-action-label" aria-hidden="true">+</span>
+              ><span class="desktop-action-label">Effacer les opérations du mois</span>
             </button>
           </div>
         </div>
-        <div class="modal hidden" id="entryModal">
-          <div class="modal-backdrop" id="modalBackdrop"></div>
-          <div class="modalbox">
-            <div class="sectionhead">
-              <h2 id="formTitle">Ajouter une opération</h2>
-              <button class="btn" type="button" id="closeEntryModal" aria-label="Fermer">✕</button>
-            </div>
-            <form id="entryForm">
-              <input type="hidden" id="editId" />
-              <div class="formgrid">
-                <div class="field">
-                  <label for="amount">Montant (€)</label
-                  ><input
-                    id="amount"
-                    type="number"
-                    inputmode="decimal"
-                    step=".01"
-                    min="0"
-                    required
-                    placeholder="0,00"
-                  />
-                </div>
-                <div class="field">
-                  <label for="label">Libellé</label
-                  ><input
-                    id="label"
-                    required
-                    placeholder="Ex. Courses, salaire…"
-                    list="labelSuggestions"
-                    autocomplete="off"
-                  /><datalist id="labelSuggestions"></datalist>
-                  <div id="labelHint" class="field-hint hidden"></div>
-                </div>
-                <div class="field">
-                  <label for="type">Type</label
-                  ><select id="type">
-                    <option value="expense">Dépense</option>
-                    <option value="income">Revenu</option>
-                  </select>
-                </div>
-                <div class="field">
-                  <label for="date">Date prévue / réelle</label><input id="date" type="date" required />
-                </div>
-                <div class="field">
-                  <label for="category">Catégorie</label
-                  ><select id="category"></select>
-                </div>
-                <div class="field">
-                  <label for="budget">Budget associé</label
-                  ><select id="budget"></select>
-                </div>
-                <div class="field full">
-                  <div class="checkrow">
-                    <label><input id="done" type="checkbox" /> Effectuée / reçue</label
-                    ><label><input id="recurring" type="checkbox" /> Récurrente</label
-                    ><label><input id="planned" type="checkbox" /> Prévu</label
-                    ><label><input id="afterSalary" type="checkbox" /> Après salaire</label>
-                  </div>
-                </div>
-                <div class="field full">
-                  <label for="notes">Note (facultatif)</label><input id="notes" placeholder="Détail…" />
-                </div>
-              </div>
-              <div class="actions">
-                <button class="btn primary" type="submit">Enregistrer</button
-                ><button class="btn" type="button" id="cancelEdit">Annuler</button>
-              </div>
-            </form>
-          </div>
-        </div>
+
         <div class="panel">
           <div class="sectionhead">
             <h2>Opérations du mois</h2>
@@ -165,62 +87,6 @@
             </div>
           </div>
           <div id="entryList" class="list"></div>
-        </div>
-        <div
-          class="modal hidden"
-          id="entryFiltersModal"
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="entryFiltersTitle"
-        >
-          <div class="modal-backdrop" id="entryFiltersBackdrop"></div>
-          <div class="modalbox entry-filters-box">
-            <div class="sectionhead">
-              <h2 id="entryFiltersTitle">Recherche, tri et filtres</h2>
-              <button class="btn" type="button" id="closeEntryFilters" aria-label="Fermer">✕</button>
-            </div>
-            <div class="entry-filter-fields">
-              <div class="field">
-                <label for="keywordSearch">Recherche</label
-                ><input
-                  id="keywordSearch"
-                  type="search"
-                  aria-label="Rechercher dans les opérations"
-                  placeholder="Rechercher une opération…"
-                />
-              </div>
-              <div class="field">
-                <label for="dateSort">Trier par date</label
-                ><select id="dateSort" aria-label="Trier par date">
-                  <option value="desc">Date : plus récente</option>
-                  <option value="asc">Date : plus ancienne</option>
-                </select>
-              </div>
-              <div class="field">
-                <label for="filter">Type d’opération</label
-                ><select id="filter" aria-label="Filtrer par type">
-                  <option value="all">Toutes</option>
-                  <option value="expense">Dépenses</option>
-                  <option value="income">Revenus</option>
-                  <option value="pending">À effectuer</option>
-                  <option value="done">Effectuées</option>
-                  <option value="recurring">Récurrentes</option>
-                </select>
-              </div>
-              <div class="field">
-                <label for="categoryFilter">Catégorie</label
-                ><select id="categoryFilter" aria-label="Filtrer par catégorie">
-                  <option value="all">Toutes les catégories</option>
-                </select>
-              </div>
-            </div>
-            <div class="entry-filter-actions">
-              <button class="btn" type="button" id="resetEntryFilters">Réinitialiser</button
-              ><button class="btn primary" type="button" id="applyEntryFilters">
-                Afficher les opérations
-              </button>
-            </div>
-          </div>
         </div>
       </section>
       <section id="stats" class="tabcontent hidden">
@@ -345,6 +211,139 @@
         navigateur si nécessaire.
       </p>
     </main>
+    <!-- Bouton flottant et fenêtres : hors des onglets animés pour rester fixés à l’écran -->
+    <button
+      class="btn primary fab"
+      type="button"
+      id="openEntryModal"
+      aria-label="Ajouter une opération"
+      title="Ajouter une opération"
+    >
+      <span aria-hidden="true" class="fab-plus">+</span><span class="fab-label">Ajouter une opération</span>
+    </button>
+    <div class="modal hidden" id="entryModal" role="dialog" aria-modal="true" aria-labelledby="formTitle">
+      <div class="modal-backdrop" id="modalBackdrop"></div>
+      <div class="modalbox entry-modalbox">
+        <div class="sectionhead modal-head">
+          <h2 id="formTitle">Ajouter une opération</h2>
+          <button class="btn" type="button" id="closeEntryModal" aria-label="Fermer">✕</button>
+        </div>
+        <form id="entryForm" class="modal-form">
+          <input type="hidden" id="editId" />
+          <div class="formgrid entry-formgrid">
+            <div class="field">
+              <label for="amount">Montant (€)</label
+              ><input
+                id="amount"
+                type="number"
+                inputmode="decimal"
+                step=".01"
+                min="0"
+                required
+                placeholder="0,00"
+              />
+            </div>
+            <div class="field">
+              <label for="type">Type</label
+              ><select id="type">
+                <option value="expense">Dépense</option>
+                <option value="income">Revenu</option>
+              </select>
+            </div>
+            <div class="field full">
+              <label for="label">Libellé</label
+              ><input
+                id="label"
+                required
+                placeholder="Ex. Courses, salaire…"
+                list="labelSuggestions"
+                autocomplete="off"
+              /><datalist id="labelSuggestions"></datalist>
+              <div id="labelHint" class="field-hint hidden"></div>
+            </div>
+            <div class="field"><label for="date">Date</label><input id="date" type="date" required /></div>
+            <div class="field">
+              <label for="category">Catégorie</label
+              ><select id="category"></select>
+            </div>
+            <div class="field">
+              <label for="budget">Budget</label
+              ><select id="budget"></select>
+            </div>
+            <div class="field">
+              <label for="notes">Note</label><input id="notes" placeholder="Facultatif" />
+            </div>
+            <div class="field full">
+              <div class="checkrow">
+                <label><input id="done" type="checkbox" /> Effectuée / reçue</label
+                ><label><input id="recurring" type="checkbox" /> Récurrente</label
+                ><label><input id="planned" type="checkbox" /> Prévu</label
+                ><label><input id="afterSalary" type="checkbox" /> Après salaire</label>
+              </div>
+            </div>
+          </div>
+          <div class="actions modal-actions">
+            <button class="btn primary" type="submit">Enregistrer</button
+            ><button class="btn" type="button" id="cancelEdit">Annuler</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div
+      class="modal hidden"
+      id="entryFiltersModal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="entryFiltersTitle"
+    >
+      <div class="modal-backdrop" id="entryFiltersBackdrop"></div>
+      <div class="modalbox entry-filters-box">
+        <div class="sectionhead modal-head">
+          <h2 id="entryFiltersTitle">Recherche, tri et filtres</h2>
+          <button class="btn" type="button" id="closeEntryFilters" aria-label="Fermer">✕</button>
+        </div>
+        <div class="entry-filter-fields">
+          <div class="field">
+            <label for="keywordSearch">Recherche</label
+            ><input
+              id="keywordSearch"
+              type="search"
+              aria-label="Rechercher dans les opérations"
+              placeholder="Rechercher une opération…"
+            />
+          </div>
+          <div class="field">
+            <label for="dateSort">Trier par date</label
+            ><select id="dateSort" aria-label="Trier par date">
+              <option value="desc">Date : plus récente</option>
+              <option value="asc">Date : plus ancienne</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="filter">Type d’opération</label
+            ><select id="filter" aria-label="Filtrer par type">
+              <option value="all">Toutes</option>
+              <option value="expense">Dépenses</option>
+              <option value="income">Revenus</option>
+              <option value="pending">À effectuer</option>
+              <option value="done">Effectuées</option>
+              <option value="recurring">Récurrentes</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="categoryFilter">Catégorie</label
+            ><select id="categoryFilter" aria-label="Filtrer par catégorie">
+              <option value="all">Toutes les catégories</option>
+            </select>
+          </div>
+        </div>
+        <div class="entry-filter-actions">
+          <button class="btn" type="button" id="resetEntryFilters">Réinitialiser</button
+          ><button class="btn primary" type="button" id="applyEntryFilters">Afficher les opérations</button>
+        </div>
+      </div>
+    </div>
+
     <section id="sharedCalcPage" aria-label="Répartition des dépenses communes">
       <header class="sc-top">
         <div class="sc-topline">

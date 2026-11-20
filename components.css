@@ -241,39 +241,158 @@
   accent-color: var(--brand);
 }
 
-/* Bouton flottant « Ajouter » sur mobile */
+/* Bouton flottant « Ajouter » : toujours en bas à droite de l'écran */
+.fab {
+  position: fixed;
+  right: max(20px, calc((100% - 1100px) / 2 + 18px));
+  bottom: calc(22px + env(safe-area-inset-bottom));
+  z-index: 900;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 56px;
+  padding: 0 22px 0 18px;
+  border-radius: 18px;
+  font-size: 15px;
+  box-shadow:
+    0 14px 30px -10px var(--glow),
+    0 4px 10px -4px #0f172a44 !important;
+}
+.fab-plus {
+  font-size: 30px;
+  font-weight: 500;
+  line-height: 1;
+  margin-top: -2px;
+}
+.wrap {
+  padding-bottom: 110px !important;
+}
+.toast-region {
+  bottom: calc(92px + env(safe-area-inset-bottom));
+}
 @media (max-width: 700px) {
-  .entry-main-actions {
-    grid-template-columns: max-content 42px !important;
-  }
-  .entry-main-actions .btn.primary#openEntryModal {
-    position: fixed;
-    right: 18px;
-    bottom: calc(20px + env(safe-area-inset-bottom));
-    z-index: 900;
-    width: 60px !important;
-    min-width: 60px !important;
-    height: 60px !important;
+  .fab {
+    width: 60px;
+    height: 60px;
+    padding: 0;
     border-radius: 20px;
-    font-size: 30px;
-    box-shadow:
-      0 14px 30px -10px var(--glow),
-      0 4px 10px -4px #0f172a44;
   }
-  .entry-main-actions .btn.primary#openEntryModal .mobile-action-label {
-    font-size: 32px;
-    font-weight: 600;
-    line-height: 1;
+  .fab-label {
+    display: none;
   }
-  #entries {
-    padding-bottom: 80px;
-  }
-  .toast-region {
-    bottom: calc(92px + env(safe-area-inset-bottom));
+  .fab-plus {
+    font-size: 34px;
   }
   .item.entry {
     gap: 8px;
     padding: 10px 6px 10px 8px;
+  }
+}
+
+/* Fenêtres : tiennent dans la hauteur de l'écran, la page derrière ne défile plus */
+html.modal-open,
+html.modal-open body {
+  overflow: hidden;
+}
+.modal {
+  overscroll-behavior: contain;
+}
+.modal-backdrop {
+  touch-action: none;
+}
+.modalbox {
+  max-height: calc(100dvh - 32px);
+  overscroll-behavior: contain;
+}
+.modal-head {
+  flex-wrap: nowrap !important;
+}
+.modal-head h2 {
+  margin: 0;
+  font-size: 19px;
+}
+.modal-head .btn {
+  flex: 0 0 auto;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+}
+.entry-modalbox {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 0;
+}
+.entry-modalbox .modal-head {
+  padding: 16px 18px 10px;
+  margin: 0 !important;
+}
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+.entry-formgrid {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 4px 18px 14px;
+}
+.entry-formgrid .field {
+  min-width: 0;
+}
+.entry-formgrid input:not([type="checkbox"]),
+.entry-formgrid select {
+  min-width: 0;
+  width: 100%;
+}
+.modal-actions {
+  margin: 0 !important;
+  padding: 12px 18px calc(14px + env(safe-area-inset-bottom));
+  border-top: 1px solid var(--line);
+  background: #fff;
+}
+.modal-actions .btn {
+  flex: 1;
+  padding-top: 13px;
+  padding-bottom: 13px;
+}
+@media (max-width: 700px) {
+  .modal#entryModal {
+    padding: 10px;
+  }
+  .modal#entryModal .modalbox {
+    max-height: calc(100dvh - 20px);
+  }
+  .entry-formgrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .entry-formgrid .field.full {
+    grid-column: 1 / -1;
+  }
+  .entry-formgrid .field label {
+    margin-bottom: 4px;
+    font-size: 12px;
+  }
+  .entry-formgrid input:not([type="checkbox"]),
+  .entry-formgrid select {
+    padding: 10px 11px;
+    min-height: 44px;
+  }
+  .entry-formgrid .checkrow {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+  .entry-formgrid .checkrow label {
+    margin: 0;
+    padding: 9px 10px;
+    font-size: 13px;
+    line-height: 1.2;
   }
 }
 
@@ -439,4 +558,127 @@
 }
 .data-table td:first-child::first-letter {
   text-transform: uppercase;
+}
+.checkrow input[type="checkbox"] {
+  flex: 0 0 auto;
+}
+
+/* ===== Animation : groupes d'opérations repliables ===== */
+.entry-group-body {
+  display: grid;
+  grid-template-rows: 1fr;
+  opacity: 1;
+  transition:
+    grid-template-rows 0.32s cubic-bezier(0.2, 0.7, 0.2, 1),
+    opacity 0.22s ease;
+}
+.entry-group {
+  gap: 0 !important;
+}
+.entry-group-body > .list {
+  min-height: 0;
+}
+/* L'espace sous le titre est dans la zone rognée : un groupe replié ne garde aucune hauteur. */
+.entry-group-body > .list > .item:first-child {
+  margin-top: 10px;
+}
+.entry-group.collapsed .entry-group-body {
+  grid-template-rows: 0fr;
+  opacity: 0;
+}
+/* On ne coupe le contenu que pendant l'animation ou une fois replié (sinon le menu ⋯ serait rogné). */
+.entry-group.animating .entry-group-body > .list,
+.entry-group.collapsed .entry-group-body > .list {
+  overflow: hidden;
+}
+.entry-group .group-chev {
+  display: inline-block;
+  width: 1em;
+  text-align: center;
+  font-size: 1.15em;
+  line-height: 1;
+  transform: rotate(90deg);
+  transition: transform 0.28s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.entry-group.collapsed .group-chev {
+  transform: rotate(0deg);
+}
+
+/* ===== Animation : passage Perso ⇄ CC ===== */
+/* Couleurs de marque déclarées animables : boutons, pastilles, barres… changent en fondu. */
+@property --brand {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #4f46e5;
+}
+@property --brand-2 {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #6366f1;
+}
+@property --brand-ink {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #4338ca;
+}
+@property --brand-soft {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #eef0ff;
+}
+@property --ring {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #4f46e526;
+}
+@property --ring-strong {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #818cf8;
+}
+@property --glow {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #4f46e566;
+}
+:root {
+  transition:
+    --brand 0.5s ease,
+    --brand-2 0.5s ease,
+    --brand-ink 0.5s ease,
+    --brand-soft 0.5s ease,
+    --ring 0.5s ease,
+    --ring-strong 0.5s ease,
+    --glow 0.5s ease;
+}
+/* En-tête : le dégradé framboise apparaît en fondu par-dessus le violet. */
+.top,
+.top.profile-cc {
+  background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4f46e5 120%);
+  transition: box-shadow 0.5s ease;
+}
+.top::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #4c0519 0%, #881337 50%, #be185d 120%);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+.top.profile-cc::before {
+  opacity: 1;
+}
+.top.profile-cc {
+  box-shadow: 0 14px 34px -16px #4c051988;
+}
+.top > * {
+  position: relative;
+  z-index: 1;
+}
+.profile-toggle button {
+  transition:
+    background 0.3s ease,
+    color 0.3s ease,
+    box-shadow 0.3s ease;
 }
