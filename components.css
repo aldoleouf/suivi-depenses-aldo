@@ -682,3 +682,54 @@ html.modal-open body {
     color 0.3s ease,
     box-shadow 0.3s ease;
 }
+
+/* Fenêtre « Marquer comme effectuée » */
+.done-box {
+  width: min(420px, 100%);
+}
+.done-box .modal-head {
+  margin-bottom: 4px !important;
+}
+.done-label {
+  margin: 0 0 14px;
+  font-size: 13px;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+#doneForm .field {
+  margin-bottom: 10px;
+}
+#doneForm .modal-actions {
+  margin: 8px -22px -22px !important;
+  padding: 12px 22px calc(16px + env(safe-area-inset-bottom));
+  border-radius: 0 0 24px 24px;
+}
+.date-shortcuts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: -2px 0 14px;
+}
+.chip {
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--ink-2);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 7px 12px;
+  border-radius: 99px;
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    color 0.15s,
+    border-color 0.15s;
+}
+.chip:hover {
+  background: var(--brand-soft);
+}
+.chip.active {
+  background: var(--brand-soft);
+  border-color: var(--brand-2);
+  color: var(--brand-ink);
+}

@@ -289,6 +289,30 @@
         </form>
       </div>
     </div>
+    <div class="modal hidden" id="doneModal" role="dialog" aria-modal="true" aria-labelledby="doneTitle">
+      <div class="modal-backdrop" id="doneBackdrop"></div>
+      <div class="modalbox done-box">
+        <div class="sectionhead modal-head">
+          <h2 id="doneTitle">Marquer comme effectuée</h2>
+          <button class="btn" type="button" id="closeDoneModal" aria-label="Fermer">✕</button>
+        </div>
+        <p class="done-label" id="doneLabel"></p>
+        <form id="doneForm">
+          <div class="field">
+            <label for="doneDate">Date de l’opération</label><input id="doneDate" type="date" required />
+          </div>
+          <div class="date-shortcuts" id="doneShortcuts"></div>
+          <div class="field">
+            <label for="doneAmount">Montant réel (€)</label
+            ><input id="doneAmount" type="number" inputmode="decimal" step=".01" min="0" required />
+          </div>
+          <div class="actions modal-actions">
+            <button class="btn primary" type="submit" id="doneSubmit">Valider</button
+            ><button class="btn" type="button" id="cancelDone">Annuler</button>
+          </div>
+        </form>
+      </div>
+    </div>
     <div
       class="modal hidden"
       id="entryFiltersModal"
